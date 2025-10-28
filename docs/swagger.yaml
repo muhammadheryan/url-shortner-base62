@@ -1,0 +1,75 @@
+basePath: /
+definitions:
+  errors.CustomError:
+    type: object
+  model.CreateURLShortnerRequest:
+    properties:
+      original_url:
+        type: string
+    type: object
+  model.GetURLResponse:
+    properties:
+      created_at:
+        type: string
+      original_url:
+        type: string
+      short_url:
+        type: string
+      updated_at:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: A URL shortener service with Base62 encoding
+  title: URL Shortener API
+  version: "1.0"
+paths:
+  /url:
+    post:
+      consumes:
+      - application/json
+      description: Create a new short URL from original URL
+      parameters:
+      - description: Create URL Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateURLShortnerRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.GetURLResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errors.CustomError'
+      summary: Create short URL
+  /url/{shortURL}:
+    get:
+      consumes:
+      - application/json
+      description: Redirect to original URL using short URL
+      parameters:
+      - description: Short URL
+        in: path
+        name: shortURL
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "308":
+          description: Redirect to original URL
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/errors.CustomError'
+      summary: Redirect to original URL
+swagger: "2.0"
