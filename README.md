@@ -80,4 +80,3 @@ go test ./... -v
 
 ---
 
-If you want, I can also add example requests for the HTTP endpoints and a small Postman collection.
